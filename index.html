@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medical Store Billing</title>
+
+<style>
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #eef2f5;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #1f3c88;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 15px;
+}
+
+th {
+    background: #1f3c88;
+    color: #fff;
+    padding: 10px;
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f7f9fc;
+}
+
+input[type="number"] {
+    width: 70px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.total-box {
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: right;
+    line-height: 1.6;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    font-size: 16px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* PRINT */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printArea, #printArea * {
+        visibility: visible;
+    }
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>💊 Medical Store Billing System</h1>
+
+<input type="text" id="search" placeholder="Search Tablet..." onkeyup="searchProduct()">
+
+<table>
+<thead>
+<tr>
+    <th>S.No</th>
+    <th>Tablet Name</th>
+    <th>Rate (₹)</th>
+    <th>Quantity</th>
+    <th>Total (₹)</th>
+</tr>
+</thead>
+<tbody id="productTable"></tbody>
+</table>
+
+<div class="total-box">
+    Sub Total: ₹ <span id="subTotal">0.00</span><br>
+    5% Charge: ₹ <span id="tax">0.00</span><br>
+    <strong>Grand Total: ₹ <span id="grandTotal">0.00</span></strong>
+</div>
+
+<button onclick="printBill()">🖨️ Print / Save Bill</button>
+
+<!-- PRINT AREA -->
+<div id="printArea">
+    <h2 style="text-align:center">Medical Store Bill</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Tablet</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody id="billTable"></tbody>
+    </table>
+
+    <h3 style="text-align:right">
+        Sub Total: ₹ <span id="printSub">0.00</span><br>
+        5% Charge: ₹ <span id="printTax">0.00</span><br>
+        <strong>Grand Total: ₹ <span id="printTotal">0.00</span></strong>
+    </h3>
+</div>
+
+<script>
+const products = [
+ {name:"ACETOSE RB (CAP)", rate:160},
+ {name:"ACETOSE P TABLET (70)", rate:70},
+ {name:"ACETOSE P TABLET (120)", rate:120},
+ {name:"ALTOCOLD-PLUS TAB", rate:110},
+ {name:"ALTOPAN-DSR CAP", rate:125},
+ {name:"ALTOPAN 40", rate:80},
+ {name:"CAMICEF-CV TAB", rate:590},
+ {name:"CAMIBRO 200SR TABLETS", rate:210},
+ {name:"CIALIN 600 TABLETS", rate:490},
+ {name:"DAPACAM-M 10/500", rate:350},
+ {name:"DICOMUST GEL", rate:14},
+ {name:"ESOMUST-DSR CAP", rate:130},
+ {name:"FEROMOR-XT TABLETS", rate:130},
+ {name:"LEVOTOSE-PLUS TABLETS", rate:135},
+ {name:"NITROCIA-100 SR TAB", rate:180},
+ {name:"OFLOWISE-200 TAB", rate:120},
+ {name:"OFLOWISE OZ", rate:220},
+ {name:"RIZALTO-DSR CAP", rate:110},
+ {name:"TRYCIA D TABLET", rate:280},
+ {name:"TRYOCAM FORTE", rate:290},
+ {name:"VILDARON-M-50/500 TABLET", rate:300},
+ {name:"VITOCIA-4G S/G", rate:250}
+];
+
+const table = document.getElementById("productTable");
+
+function loadProducts() {
+    products.forEach((p, i) => {
+        table.innerHTML += `
+        <tr>
+            <td>${i+1}</td>
+            <td>${p.name}</td>
+            <td>${p.rate}</td>
+            <td><input type="number" min="0" value="0" oninput="updateBill()"></td>
+            <td class="rowTotal">0</td>
+        </tr>`;
+    });
+}
+
+function updateBill() {
+    let subTotal = 0;
+    let billHTML = "";
+
+    const rows = table.querySelectorAll("tr");
+
+    rows.forEach(row => {
+        const qty = Number(row.querySelector("input").value);
+        const rate = Number(row.cells[2].innerText);
+        const total = qty * rate;
+
+        row.querySelector(".rowTotal").innerText = total;
+
+        if (qty > 0) {
+            billHTML += `
+            <tr>
+                <td>${row.cells[1].innerText}</td>
+                <td>${qty}</td>
+                <td>${rate}</td>
+                <td>${total}</td>
+            </tr>`;
+            subTotal += total;
+        }
+    });
+
+    const tax = subTotal * 0.05;
+    const grandTotal = subTotal + tax;
+
+    document.getElementById("billTable").innerHTML = billHTML;
+    document.getElementById("subTotal").innerText = subTotal.toFixed(2);
+    document.getElementById("tax").innerText = tax.toFixed(2);
+    document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+
+    document.getElementById("printSub").innerText = subTotal.toFixed(2);
+    document.getElementById("printTax").innerText = tax.toFixed(2);
+    document.getElementById("printTotal").innerText = grandTotal.toFixed(2);
+}
+
+function searchProduct() {
+    const value = document.getElementById("search").value.toLowerCase();
+    const rows = table.getElementsByTagName("tr");
+
+    for (let row of rows) {
+        row.style.display = row.cells[1].innerText.toLowerCase().includes(value) ? "" : "none";
+    }
+}
+
+function printBill() {
+    updateBill();
+    window.print();
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
