@@ -3,11 +3,17 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+/* ===== GLOBAL ===== */
 body {
     margin: 0;
     background: linear-gradient(180deg, #eef4ff, #f8fbff);
     font-family: "Segoe UI", Roboto, system-ui, sans-serif;
-    color: #1f2937;
+    color: #020617; /* 🔥 DARK TEXT */
+}
+
+h1, h2, h3 {
+    color: #020617;
+    font-weight: 700;
 }
 
 .app {
@@ -16,10 +22,10 @@ body {
     padding: 16px;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header {
     background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
+    color: #ffffff;
     padding: 22px;
     border-radius: 16px;
     text-align: center;
@@ -36,12 +42,12 @@ body {
 .header p {
     margin: 6px 0 0;
     font-size: 14px;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
-/* CARDS */
+/* ===== CARDS ===== */
 .card {
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.97);
     backdrop-filter: blur(6px);
     border-radius: 16px;
     padding: 16px;
@@ -49,23 +55,24 @@ body {
     margin-bottom: 20px;
 }
 
-/* SEARCH */
+/* ===== SEARCH ===== */
 input[type="text"] {
     width: 100%;
     padding: 14px 16px;
     border-radius: 14px;
-    border: 1px solid #dbeafe;
+    border: 1px solid #c7d2fe;
     font-size: 16px;
+    color: #020617;
     outline: none;
     transition: all 0.25s ease;
 }
 
 input[type="text"]:focus {
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
 }
 
-/* TABLE */
+/* ===== TABLE ===== */
 .table-container {
     margin-top: 14px;
     overflow-x: auto;
@@ -79,19 +86,22 @@ table {
 }
 
 th {
-    background: #2563eb;
-    color: white;
+    background: #1e40af;
+    color: #ffffff;
     padding: 12px;
     font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
 td {
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
     font-size: 14px;
+    font-weight: 500;
     text-align: center;
+    color: #020617; /* 🔥 DARK TABLE TEXT */
 }
 
 tr:nth-child(even) {
@@ -102,7 +112,7 @@ tr:hover {
     background: #eef4ff;
 }
 
-/* QTY INPUT */
+/* ===== QTY INPUT ===== */
 input[type="number"] {
     width: 68px;
     padding: 6px;
@@ -110,47 +120,51 @@ input[type="number"] {
     border: 1px solid #c7d2fe;
     text-align: center;
     font-size: 14px;
+    font-weight: 600;
+    color: #020617;
 }
 
-/* SUMMARY */
+/* ===== SUMMARY ===== */
 .summary .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    font-size: 15px;
+    font-size: 16px;
+    color: #020617;
 }
 
 .summary .row span:last-child {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .summary .total {
-    font-size: 20px;
-    font-weight: 700;
-    border-top: 2px dashed #e5e7eb;
+    font-size: 22px;
+    font-weight: 800;
+    color: #020617;
+    border-top: 2px dashed #cbd5f5;
     margin-top: 10px;
     padding-top: 10px;
 }
 
-/* STICKY TOTAL (BIG UX BOOST) */
+/* ===== STICKY SUMMARY ===== */
 .sticky-summary {
     position: sticky;
     bottom: 12px;
     background: linear-gradient(180deg, #ffffff, #f8fbff);
 }
 
-/* BUTTON */
+/* ===== BUTTON ===== */
 button {
     width: 100%;
     margin-top: 14px;
     padding: 15px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     border: none;
     border-radius: 14px;
     background: linear-gradient(135deg, #22c55e, #16a34a);
-    color: white;
+    color: #ffffff;
     cursor: pointer;
     box-shadow: 0 10px 25px rgba(34,197,94,0.35);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -161,39 +175,18 @@ button:hover {
     box-shadow: 0 14px 30px rgba(34,197,94,0.45);
 }
 
-/* PRINT */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #printArea, #printArea * {
-        visibility: visible;
-    }
-
-    #printArea {
-        position: absolute;
-        inset: 0;
-        padding: 12px;
-        font-size: 14px;
-    }
-
-    button {
-        display: none;
-    }
-}
-/* ===== PRINT AREA STYLING (MATCH UI) ===== */
+/* ===== PRINT AREA ===== */
 .print-card {
-    background: white;
+    background: #ffffff;
     border-radius: 12px;
     padding: 16px;
-    box-shadow: none;
 }
 
 .print-title {
     text-align: center;
     margin-bottom: 12px;
-    color: #1e40af;
+    color: #020617;
+    font-weight: 700;
 }
 
 .print-table {
@@ -203,10 +196,11 @@ button:hover {
 }
 
 .print-table th {
-    background: #2563eb;
-    color: white;
+    background: #1e40af;
+    color: #ffffff;
     padding: 8px;
     font-size: 13px;
+    font-weight: 700;
 }
 
 .print-table td {
@@ -214,11 +208,14 @@ button:hover {
     border-bottom: 1px solid #e5e7eb;
     text-align: center;
     font-size: 13px;
+    font-weight: 500;
+    color: #020617;
 }
 
 .print-summary {
     margin-top: 10px;
     font-size: 14px;
+    color: #020617;
 }
 
 .print-summary div {
@@ -229,16 +226,30 @@ button:hover {
 
 .print-grand {
     font-size: 16px;
-    font-weight: 700;
-    border-top: 2px dashed #e5e7eb;
+    font-weight: 800;
+    border-top: 2px dashed #cbd5f5;
     padding-top: 6px;
     margin-top: 6px;
+    color: #020617;
 }
 
-/* PRINT OVERRIDE */
+/* ===== PRINT MODE ===== */
 @media print {
-    body {
-        background: white;
+    body * {
+        visibility: hidden;
+    }
+
+    #printArea,
+    #printArea * {
+        visibility: visible;
+    }
+
+    #printArea {
+        position: absolute;
+        inset: 0;
+        padding: 12px;
+        font-size: 14px;
+        background: #ffffff;
     }
 
     .header,
@@ -246,9 +257,5 @@ button:hover {
     .sticky-summary,
     button {
         display: none !important;
-    }
-
-    #printArea {
-        display: block;
     }
 }
